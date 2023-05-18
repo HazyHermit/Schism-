@@ -9,14 +9,14 @@
         discrete - Player can also press number keys to change scenes. Player can also collect treats using Sol.
 
     The player’s goal can only be achieved indirectly (by allowing the physics engine to move key objects into position/contact): 
-        In scene 3, player has to move a crate to get up and over the train. If player is controlling Lune, they can also move Sol around. 
+        In scene 2 and 3, player has to get on top of the train to retrieve the treat. If player is controlling Lune, they can also push Sol around. 
 
     3+ physics-based gameplay scenes (possibly implemented with a single Phaser Scene subclass).- 
         scene 1: non pushable and pushable characters (Lune can push sol because sol is a smol dog, but sol can not push Lune), player can switch between Lune and Sol. 
         scene 2: Sol has to jump onto the train to get to the treat. 
-        scene 3: Sol has to collect the treat on top of the lamp.
+        scene 3: Sol has to collect the treat on top of the lamp and Lune gets to the arrow.
 
-    Other scenes are used to separate and contextualize the gameplay scenes - 
+    Other scenes are used to separate and contextualize the gameplay scenes - Scene intros nested in between each scene to explain the objective of each scene. 
 
 
 # How all of your data assets (if you have any) were created

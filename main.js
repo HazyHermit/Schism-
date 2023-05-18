@@ -56,9 +56,9 @@ class scene1 extends Phaser.Scene
         
 
         const ground = this.physics.add.staticGroup();
-        // this.floor = ground.create(450,600, 'ground').setScale(0.15).refreshBody();
+        
         this.floor = ground.create(600,350, 'ground').setScale(0.15).refreshBody();
-        //this.floor.scale = 0.15; 
+         
 
         this.Sol = this.physics.add.sprite(300, 650, 'Sol').setBounce(0.2).setCollideWorldBounds(true);
         this.Lune = this.physics.add.sprite(100, 450, 'lune').setBounce(0.2).setCollideWorldBounds(true);
@@ -130,9 +130,7 @@ class scene1 extends Phaser.Scene
             this.currentPlayer.setAccelerationX(this.ACCELERATION);
             
             this.currentPlayer.setFlip(true, false);
-            //this.currentPlayer.setVelocityX(160);
-
-           // this.currentPlayer.anims.play('right', true);
+           
         }
         else
         {
@@ -155,7 +153,6 @@ class scene1 extends Phaser.Scene
             game.scene.start('scene2intro')
         });
 
-        //this.physics.world.wrap(this.currentPlayer, this.currentPlayer.width/2);
     }
 }
 
@@ -258,10 +255,7 @@ class scene2 extends Phaser.Scene {
         });
         this.treat.scale = 0.00000000765;
 
-        // for (const treat of this.treat.getChildren())
-        // {
-        //     treat.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-        // }
+        
 
 
         this.physics.add.collider(this.Sol, ground);
@@ -274,8 +268,7 @@ class scene2 extends Phaser.Scene {
         this.physics.add.collider(this.currentPlayer,this.trainstuff);
 
         this.physics.add.overlap(this.currentPlayer, this.treat, this.collecttreat, null, this);
-        //this.physics.add.collider(this.Lune, this.trainstuff);
-        // this.physics.add.collider(Lune, Sol);
+
 
         window.body1 = this.Sol.body;
         window.physics = this.physics;
@@ -400,9 +393,8 @@ class scene3 extends Phaser.Scene {
             
 
             const ground = this.physics.add.staticGroup();
-            // this.floor = ground.create(450,600, 'ground').setScale(0.15).refreshBody();
             this.floor = ground.create(600,350, 'ground').setScale(0.16).refreshBody();
-            //this.floor.scale = 0.15; 
+
             
             //const trainstuff = this.physics.add.staticGroup();
             this.lamp = this.physics.add.image(700,410, 'lamp').setScale(0.29);
@@ -426,8 +418,7 @@ class scene3 extends Phaser.Scene {
                 setXY: { x: 700, y: 50, stepX: 90 }
             });
 
-            //this.treat.setImmovable(true);
-            //this.treat.body.allowGravity = false;
+            
             this.treat.scale = 0.00000000765;
 
 
@@ -450,8 +441,7 @@ class scene3 extends Phaser.Scene {
             this.physics.add.collider(this.treat,this.lamp);
             this.physics.add.collider(this.Sol, this.Lune);
             this.physics.add.collider(this.currentPlayer,this.lamp);
-            //this.physics.add.collider(this.Lune, this.trainstuff);
-            // this.physics.add.collider(Lune, Sol);
+           
             this.physics.add.overlap(this.currentPlayer, this.treat, this.collecttreat, null, this);
             
     
@@ -484,7 +474,6 @@ class scene3 extends Phaser.Scene {
             {
                 this.currentPlayer.setAccelerationX(-this.ACCELERATION);
                 this.currentPlayer.resetFlip();
-                //this.currentPlayer.setVelocityX(-160);
     
             
             }
@@ -505,7 +494,7 @@ class scene3 extends Phaser.Scene {
             if (this.cursors.up.isDown && !this.currentPlayer.body.touching.down)
             {
                 this.currentPlayer.setVelocityY(this.JUMP_VELOCITY);
-                //this.currentPlayer.setVelocityY(-330);
+                
     
                 window.showit = true;
             }
