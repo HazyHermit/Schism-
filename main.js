@@ -2,6 +2,19 @@
     constructor() {
         super({ key: 'scene1intro' });
     }
+
+    create ()
+    {
+        this.cameras.main.setBackgroundColor("#443D45");
+        this.add.text(10,50, 'Scene 1: Use arrow keys to get to the red arrow!', { fontSize: '22px', fill: '#ecf0f1' }); 
+        this.add.text(10,70, 'click anywhere to begin.', { fontSize: '22px', fill: '#ecf0f1' });
+        this.input.on('pointerdown', () =>
+        {
+            this.scene.start('Main')
+
+        }, this);
+    }
+
 }
 
 class scene1 extends Phaser.Scene
@@ -21,6 +34,7 @@ class scene1 extends Phaser.Scene
         this.load.image('bg', 'bg.png');
         this.load.image('ground', 'foreground2.png');
         //this.load.image('star', 'src/games/firstgame/assets/star.png');
+        this.load.image('arrow', 'arrowscale.png')
         this.load.image('lune', 'lune.png', { frameWidth: 100, frameHeight: 48 });
         this.load.image('Sol', 'Sol.png', { frameWidth: 32, frameHeight: 48 });
 
@@ -57,6 +71,18 @@ class scene1 extends Phaser.Scene
         this.currentPlayer = this.Sol;
 
 
+        //include arrow 
+        this.arrow = this.physics.add.image(850,510, 'arrow').setScale(0.1)
+        //.setFontSize(this.s * 2)
+            .setInteractive()
+            .setImmovable(true)
+            .setVelocity(0)
+            .on('pointover', ()=> {
+                this.scene.start('scene2intro')
+            })
+        
+        this.arrow.body.allowGravity = false;
+            
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.physics.add.collider(this.Sol, ground);
@@ -84,27 +110,9 @@ class scene1 extends Phaser.Scene
 
         }, this);
 
-        this.add.text(10, 10, 'Click to change character', { fontSize: '22px', fill: '#ecf0f1' });
-        this.add.text(10,50, 'press 1,2,3 to switch between scenes.', { fontSize: '22px', fill: '#ecf0f1' });
+        this.add.text(10, 10, 'Click anywhere to change character', { fontSize: '22px', fill: '#ecf0f1' });
+        //this.add.text(10,50, 'press 1,2,3 to switch between scenes.', { fontSize: '22px', fill: '#ecf0f1' });
 
-
-    // set up Scene switcher
-        this.input.keyboard.on('keydown', (event) => {
-            //console.log(event);
-            switch(event.key) {
-                case '1':
-                    this.scene.start('Main');
-                    break;
-                case '2':
-                    this.scene.start('scene2');
-                    break;
-                case '3':
-                    this.scene.start('scene3');
-                    break;
-                default:
-                    break;
-            }
-        }); 
     }
 
     update ()
@@ -143,6 +151,10 @@ class scene1 extends Phaser.Scene
             window.showit = true;
         }
 
+        this.physics.world.collide(this.currentPlayer, this.arrow, function(){
+            game.scene.start('scene2intro')
+        });
+
         //this.physics.world.wrap(this.currentPlayer, this.currentPlayer.width/2);
     }
 }
@@ -150,6 +162,19 @@ class scene1 extends Phaser.Scene
 class scene2intro extends Phaser.Scene {
     constructor() {
         super({ key: 'scene2intro' });
+    }
+
+    create ()
+    {
+        this.cameras.main.setBackgroundColor("#443D45");
+        this.add.text(10,50, 'Huzzah!! You know how to move!!', { fontSize: '22px', fill: '#ecf0f1' }); 
+        this.add.text(10,70, 'Scene 2: Use arrow keys to get onto the train to retrieve a treat.', { fontSize: '22px', fill: '#ecf0f1' }); 
+        this.add.text(10,100, 'Click anywhere to begin.', { fontSize: '22px', fill: '#ecf0f1' }); 
+        this.input.on('pointerdown', () =>
+        {
+            this.scene.start('scene2')
+
+        }, this);
     }
 }
 
@@ -170,6 +195,7 @@ class scene2 extends Phaser.Scene {
         this.load.image('train', 'train.png')
         this.load.image('ground', 'foreground2.png');
         this.load.image('treat', 'treat.PNG');
+        this.load.image('arrow', 'arrowscale.png')
         this.load.image('lune', 'lune.png', { frameWidth: 100, frameHeight: 48 });
         this.load.image('Sol', 'Sol.png', { frameWidth: 32, frameHeight: 48 });
 
@@ -189,12 +215,23 @@ class scene2 extends Phaser.Scene {
         this.imageobject = this.add.image(400, 310, 'train bg');
         this.imageobject.scale = 0.125;
 
-        //const trainstuff = this.physics.add.staticGroup();
+
         this.trainstuff = this.physics.add.image(700,410, 'train').setScale(0.1);
-        //this.trainstuff.scale = 0.1;
         this.trainstuff.setImmovable(true);
         this.trainstuff.body.allowGravity = false;
-        //this.trainstuff.setVelocityX(-50); 
+
+
+        //include arrow 
+        this.arrow = this.physics.add.image(850,510, 'arrow').setScale(0.1)
+        //.setFontSize(this.s * 2)
+            .setInteractive()
+            .setImmovable(true)
+            .setVelocity(0)
+            .on('pointover', ()=> {
+                this.scene.start('scene3intro')
+            })
+        
+        this.arrow.body.allowGravity = false;
         
 
         const ground = this.physics.add.staticGroup();
@@ -231,6 +268,7 @@ class scene2 extends Phaser.Scene {
         this.physics.add.collider(this.Lune, ground);
         this.physics.add.collider(this.treat, ground);
         this.physics.add.collider(this.treat,this.trainstuff);
+        //this.physics.add.collider(this.arrow, ground)
 
         this.physics.add.collider(this.Sol, this.Lune);
         this.physics.add.collider(this.currentPlayer,this.trainstuff);
@@ -242,6 +280,8 @@ class scene2 extends Phaser.Scene {
         window.body1 = this.Sol.body;
         window.physics = this.physics;
         window.showit = false;
+
+        
 
         this.input.on('pointerdown', () =>
         {
@@ -257,28 +297,9 @@ class scene2 extends Phaser.Scene {
 
         }, this);
 
-        //this.add.text(10, 10, 'Click to change character', { fontSize: '22px', fill: '#ecf0f1' });
-        this.add.text(10,50, 'press 1,2,3 to switch between scenes.', { fontSize: '22px', fill: '#ecf0f1' });
+        
         this.add.text(10,70, 'only Sol can collect dog treats.', { fontSize: '22px', fill: '#ecf0f1' });
 
-
-    // set up Scene switcher
-        this.input.keyboard.on('keydown', (event) => {
-            //console.log(event);
-            switch(event.key) {
-                case '1':
-                    this.scene.start('Main');
-                    break;
-                case '2':
-                    this.scene.start('scene2');
-                    break;
-                case '3':
-                    this.scene.start('scene3');
-                    break;
-                default:
-                    break;
-            }
-        }); 
     }
 
     update ()
@@ -304,9 +325,6 @@ class scene2 extends Phaser.Scene {
         {
             this.currentPlayer.setAccelerationX(0);
             this.currentPlayer.setDragX(this.DRAG);
-            //this.currentPlayer.setVelocityX(0);
-
-           // this.currentPlayer.anims.play('turn');
         }
 
         if (this.cursors.up.isDown && !this.currentPlayer.body.touching.down)
@@ -317,6 +335,9 @@ class scene2 extends Phaser.Scene {
             window.showit = true;
         }
 
+        this.physics.world.collide(this.currentPlayer, this.arrow, function(){
+            game.scene.start('scene3intro')
+        });
         //this.physics.world.wrap(this.currentPlayer, this.currentPlayer.width/2);
     }
 
@@ -326,9 +347,22 @@ class scene2 extends Phaser.Scene {
     }
 }
 
-class scene1intro extends Phaser.Scene {
+class scene3intro extends Phaser.Scene {
     constructor() {
-        super({ key: 'scene1intro' });
+        super({ key: 'scene3intro' });
+    }
+
+    create ()
+    {
+        this.cameras.main.setBackgroundColor("#443D45");
+        this.add.text(10,50, 'Almost there!!', { fontSize: '22px', fill: '#ecf0f1' }); 
+        this.add.text(10,70, 'Scene 3: Now apply what you learned to get the treat and arrow!!', { fontSize: '22px', fill: '#ecf0f1' }); 
+        this.add.text(10,100, 'Click anywhere to begin.', { fontSize: '22px', fill: '#ecf0f1' });
+        this.input.on('pointerdown', () =>
+        {
+            this.scene.start('scene3')
+
+        }, this);
     }
 }
 
@@ -347,11 +381,7 @@ class scene3 extends Phaser.Scene {
             //this.load.image('train bg', 'train bg.png');
             this.load.image('lamp', 'lamp.png')
             this.load.image('treat', 'treat.PNG');
-            //this.load.image('ground', 'foreground2.png');
-            //this.load.image('star', 'src/games/firstgame/assets/star.png');
-            //this.load.image('lune', 'lune.png', { frameWidth: 100, frameHeight: 48 });
-            //this.load.image('Sol', 'Sol.png', { frameWidth: 32, frameHeight: 48 });
-    
+
         }
     
         create ()
@@ -380,7 +410,15 @@ class scene3 extends Phaser.Scene {
             this.lamp.setImmovable(true).setFlip(true);
             this.lamp.body.allowGravity = false;
             //this.trainstuff.setVelocityX(-50); 
-    
+
+            //include arrow 
+            this.arrow = this.physics.add.image(850,510, 'arrow').setScale(0.1)
+            //.setFontSize(this.s * 2)
+                .setInteractive()
+                .setImmovable(true)
+                .setVelocity(0)
+            this.arrow.body.allowGravity = false;
+
             //include treat 
             this.treat = this.physics.add.group({
                 key: 'treat',
@@ -435,28 +473,9 @@ class scene3 extends Phaser.Scene {
     
             }, this);
     
-            //this.add.text(10, 10, 'Click to change character', { fontSize: '22px', fill: '#ecf0f1' });
-            this.add.text(10,50, 'press 1,2,3 to switch between scenes.', { fontSize: '22px', fill: '#ecf0f1' });
             this.add.text(10,70, 'only Sol can collect dog treats.', { fontSize: '22px', fill: '#ecf0f1' });
     
     
-        // set up Scene switcher
-            this.input.keyboard.on('keydown', (event) => {
-                //console.log(event);
-                switch(event.key) {
-                    case '1':
-                        this.scene.start('Main');
-                        break;
-                    case '2':
-                        this.scene.start('scene2');
-                        break;
-                    case '3':
-                        this.scene.start('scene3');
-                        break;
-                    default:
-                        break;
-                }
-            }); 
         }
     
         update ()
@@ -474,17 +493,13 @@ class scene3 extends Phaser.Scene {
                 this.currentPlayer.setAccelerationX(this.ACCELERATION);
                 
                 this.currentPlayer.setFlip(true, false);
-                //this.currentPlayer.setVelocityX(160);
-    
-               // this.currentPlayer.anims.play('right', true);
+              
             }
             else
             {
                 this.currentPlayer.setAccelerationX(0);
                 this.currentPlayer.setDragX(this.DRAG);
-                //this.currentPlayer.setVelocityX(0);
-    
-               // this.currentPlayer.anims.play('turn');
+            
             }
     
             if (this.cursors.up.isDown && !this.currentPlayer.body.touching.down)
@@ -494,14 +509,30 @@ class scene3 extends Phaser.Scene {
     
                 window.showit = true;
             }
-    
-            //this.physics.world.wrap(this.currentPlayer, this.currentPlayer.width/2);
+
+            this.physics.world.collide(this.currentPlayer, this.arrow, function(){
+                game.scene.start('outro')
+            });
+
         }
         collecttreat(player, treat)
     {
         treat.disableBody(true, true);
     }
     }
+
+class outro extends Phaser.Scene {
+    constructor() {
+        super({ key: 'outro' });
+    }
+    
+    create ()
+    {
+        this.cameras.main.setBackgroundColor("#443D45");
+        this.add.text(10,50, 'Thank you for playing!!', { fontSize: '22px', fill: '#ecf0f1' }); 
+    
+    }
+}
 
 
 const config = {
@@ -516,7 +547,7 @@ const config = {
             debug: true
         }
     },
-    scene: [ scene1 , scene2, scene3]
+    scene: [ scene1intro, scene1 , scene2intro, scene2, scene3intro, scene3, outro]
 };
 
 const game = new Phaser.Game(config);
