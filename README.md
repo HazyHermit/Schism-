@@ -2,6 +2,7 @@
     A point and click exploration game made by Hazelle Malonzo 
 
 # Where to play your game (a link to your deployed game)
+    https://hazyhermit.github.io/Schism-/ 
 
 # How your design satisfies the experience requirements below
     The game uses both continuous and discrete inputs from the player: 
